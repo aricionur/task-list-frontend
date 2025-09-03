@@ -1,9 +1,7 @@
-// src/components/TaskForm.tsx
-
 import React, { useState } from "react";
 import styled from "styled-components";
 import { createTask } from "../api/tasks";
-import { CreateTaskRequest, Status } from "../types/Task";
+import { CreateTask, Status, UpdateTask } from "../types/Task";
 
 const FormContainer = styled.form`
   display: flex;
@@ -49,32 +47,34 @@ interface TaskFormProps {
   onTaskCreated: () => void;
 }
 
+const defaultTask: CreateTask = {
+  title: "",
+  description: "",
+  dueDate: "",
+  status: Status.Todo,
+};
+
 const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [dueDate, setDueDate] = useState<string>("");
-  const [status, setStatus] = useState<Status>(Status.Todo);
+  const [task, setTask] = useState<CreateTask>(defaultTask);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newTask: CreateTaskRequest = {
-      title,
-      description,
-      dueDate,
-      status,
-    };
 
     try {
-      await createTask(newTask);
+      await createTask(task);
+
       // Clear form fields after successful creation
-      setTitle("");
-      setDescription("");
-      setDueDate("");
-      setStatus(Status.Todo);
-      onTaskCreated(); // Notify parent component to refresh task list
+      setTask(defaultTask);
+
+      // Notify parent component to refresh task list
+      onTaskCreated();
     } catch (error) {
       console.error("Failed to create task:", error);
     }
+  };
+
+  const updateTask = (data: UpdateTask) => {
+    setTask((task) => ({ ...task, ...data }));
   };
 
   return (
@@ -85,8 +85,8 @@ const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
         <input
           id="title"
           type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={task.title}
+          onChange={(e) => updateTask({ title: e.target.value })}
           required
         />
       </FormField>
@@ -94,8 +94,8 @@ const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
         <label htmlFor="description">Description</label>
         <textarea
           id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={task.description}
+          onChange={(e) => updateTask({ description: e.target.value })}
         />
       </FormField>
       <FormField>
@@ -103,20 +103,19 @@ const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
         <input
           id="dueDate"
           type="date"
-          value={dueDate}
-          onChange={(e) => setDueDate(e.target.value)}
+          value={task.dueDate}
+          onChange={(e) => updateTask({ dueDate: e.target.value })}
         />
       </FormField>
       <FormField>
         <label htmlFor="status">Status</label>
         <select
           id="status"
-          value={status}
-          onChange={(e) => setStatus(e.target.value as Status)}
+          value={task.status}
+          onChange={(e) => updateTask({ status: e.target.value as Status })}
         >
           <option value="Todo">Todo</option>
           <option value="In Progress">In Progress</option>
-          <option value="Done">Done</option>
         </select>
       </FormField>
       <SubmitButton type="submit">Add Task</SubmitButton>

@@ -12,16 +12,6 @@ export interface Task {
   status: Status;
 }
 
-export interface CreateTaskRequest {
-  title: string;
-  description?: string;
-  dueDate?: string;
-  status: Status;
-}
+export type CreateTask = Omit<Task, "id">;
 
-export interface UpdateTaskRequest {
-  title?: string;
-  description?: string;
-  dueDate?: string;
-  status?: Status;
-}
+export type UpdateTask = Partial<CreateTask>;
