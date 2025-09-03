@@ -3,46 +3,6 @@ import styled from "styled-components";
 import { createTask } from "../api/tasks";
 import { CreateTask, Status, UpdateTask } from "../types/Task";
 
-const FormContainer = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-  border-radius: 8px;
-  background-color: #eef1f4;
-  margin-bottom: 2rem;
-`;
-
-const FormField = styled.div`
-  display: flex;
-  flex-direction: column;
-  label {
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-  }
-  input,
-  select,
-  textarea {
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-  }
-`;
-
-const SubmitButton = styled.button`
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 0.75rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  &:hover {
-    background-color: #218838;
-  }
-`;
-
 interface TaskFormProps {
   onTaskCreated: () => void;
 }
@@ -124,3 +84,43 @@ const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
 };
 
 export default TaskForm;
+
+const FormContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #eef1f4;
+  margin-bottom: 2rem;
+`;
+
+const FormField = styled.div`
+  display: flex;
+  flex-direction: column;
+  label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+  input,
+  select,
+  textarea {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+`;
+
+const SubmitButton = styled.button`
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  &:hover {
+    background-color: #218838;
+  }
+`;
