@@ -2,6 +2,7 @@ import { useState } from "react";
 import { styled } from "styled-components";
 import { deleteTask, updateTask } from "../api/tasks";
 import { Status, Task } from "../types/Task";
+import { formatDate } from "../utils/helpers";
 
 interface Props {
   tasks: Task[];
@@ -64,7 +65,6 @@ export default function TaskList({ tasks, fetchTasks }: Props) {
               {sortColumn === "dueDate" &&
                 (sortDirection === "asc" ? "▲" : "▼")}
             </TableHeader>
-            <TableHeader>Actions</TableHeader>
           </tr>
         </thead>
         <tbody>
@@ -72,23 +72,12 @@ export default function TaskList({ tasks, fetchTasks }: Props) {
             <tr key={task.id}>
               <StyledTableCell>{task.title}</StyledTableCell>
               <StyledTableCell>{task.description}</StyledTableCell>
-              <StyledTableCell>{task.status}</StyledTableCell>
-              <StyledTableCell>{task.dueDate}</StyledTableCell>
-              <ActionCell>
-                <Button
-                  onClick={() => handleUpdateStatus(task.id, Status.Done)}
-                >
-                  Done
-                </Button>
-                <Button
-                  onClick={() => handleUpdateStatus(task.id, Status.InProgress)}
-                >
-                  In Progress
-                </Button>
-                <Button isDelete onClick={() => handleDeleteTask(task.id)}>
-                  Delete
-                </Button>
-              </ActionCell>
+              <StyledTableCell>
+                <Tag backgroundColor={statusColorMap[task.status]}>
+                  {task.status}
+                </Tag>
+              </StyledTableCell>
+              <StyledTableCell>{formatDate(task.dueDate)}</StyledTableCell>
             </tr>
           ))}
         </tbody>
@@ -136,13 +125,38 @@ const StyledTableCell = styled.td`
   border: 2px solid #ddd; /* A new component for standard cells */
 `;
 
-interface ButtonProps {
-  isDelete?: boolean;
+const statusColorMap: Record<Status, BackgroundColorKeys> = {
+  [Status.Todo]: "#FEEF82",
+  [Status.InProgress]: "#7ECBBC",
+  [Status.Done]: "#3A48B2",
+};
+
+const bgHoverColorMap = {
+  "#F03112": "#D0290D",
+  "#7ECBBC": "#629E92",
+  "#3A48B2": "#1A2684",
+  "#FEEF82": "#EADF70",
+};
+
+type BackgroundColorKeys = keyof typeof bgHoverColorMap;
+
+interface TagProps {
+  backgroundColor: BackgroundColorKeys;
 }
 
+const Tag = styled.div<TagProps>`
+  padding: 10px;
+  background-color: ${(props) => props.backgroundColor};
+  width: fit-content;
+  border-radius: 4px;
+`;
+
+interface ButtonProps {
+  backgroundColor: BackgroundColorKeys;
+}
 // Modified Button styled component
 const Button = styled.button<ButtonProps>`
-  background-color: ${(props) => (props.isDelete ? "#dc3545" : "#007bff")};
+  background-color: ${(props) => props.backgroundColor};
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -150,6 +164,6 @@ const Button = styled.button<ButtonProps>`
   cursor: pointer;
 
   &:hover {
-    background-color: ${(props) => (props.isDelete ? "#c82333" : "#0056b3")};
+    background-color: ${(props) => bgHoverColorMap[props.backgroundColor]};
   }
 `;
