@@ -69,7 +69,7 @@ export default function TaskList({ tasks, fetchTasks }: Props) {
         </thead>
         <tbody>
           {sortedTasks.map((task) => (
-            <tr key={task.id}>
+            <StyledTableRow key={task.id}>
               <StyledTableCell>{task.title}</StyledTableCell>
               <StyledTableCell>{task.description}</StyledTableCell>
               <StyledTableCell>
@@ -78,7 +78,7 @@ export default function TaskList({ tasks, fetchTasks }: Props) {
                 </Tag>
               </StyledTableCell>
               <StyledTableCell>{formatDate(task.dueDate)}</StyledTableCell>
-            </tr>
+            </StyledTableRow>
           ))}
         </tbody>
       </StyledTable>
@@ -123,6 +123,13 @@ const ActionCell = styled.td`
 const StyledTableCell = styled.td`
   padding: 1rem;
   border: 2px solid #ddd; /* A new component for standard cells */
+`;
+
+const StyledTableRow = styled.tr`
+  &:hover {
+    cursor: pointer;
+    background-color: #cbd2ff;
+  }
 `;
 
 const statusColorMap: Record<Status, BackgroundColorKeys> = {
