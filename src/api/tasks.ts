@@ -1,6 +1,7 @@
 // src/api/tasks.ts
 import axios from "axios";
 import { Task, CreateTask, UpdateTask } from "../types/Task";
+import { addResponseInterceptors } from "./axiosInterceptors";
 
 const apiClient = axios.create({
   baseURL: "http://localhost:3000/v1",
@@ -8,6 +9,8 @@ const apiClient = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+addResponseInterceptors(apiClient);
 
 export const getTasks = async (): Promise<Task[]> => {
   const response = await apiClient.get("/task");

@@ -2,23 +2,21 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { createTask, updateTask } from "../api/tasks";
 import { Task, CreateTask, Status } from "../types/Task";
+import { formatDateForInput } from "../utils/helpers";
 
-// Helper type for the form data, can be a full task or a new one
 type FormData = Task | CreateTask;
 
-// Define props for the TaskModal component
 interface TaskModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
-  task: Task | null; // This prop determines if we're creating or updating
+  task: Task | null;
 }
 
-// Define a default state for a new task
 const defaultNewTask: CreateTask = {
   title: "",
   description: "",
-  dueDate: "",
+  dueDate: new Date(),
   status: Status.Todo,
 };
 
@@ -28,11 +26,8 @@ const TaskModal: React.FC<TaskModalProps> = ({
   onSuccess,
   task,
 }) => {
-  // Use state for the form data, initialized with the provided task or a new, empty task
   const [formData, setFormData] = useState<FormData>(task || defaultNewTask);
 
-  // This effect syncs the form data with the 'task' prop whenever it changes.
-  // This is crucial for switching between "create" (task is null) and "update" (task is an object).
   useEffect(() => {
     setFormData(task || defaultNewTask);
   }, [task]);
@@ -41,18 +36,14 @@ const TaskModal: React.FC<TaskModalProps> = ({
     e.preventDefault();
 
     try {
-      if (task) {
-        // If 'task' exists, we are in "update" mode
-        await updateTask(task.id, formData);
-      } else {
-        // If 'task' is null, we are in "create" mode
-        await createTask(formData);
-      }
-      onSuccess(); // Call success handler to refresh the list
+      if (task) await updateTask(task.id, formData);
+      else await createTask(formData);
+
+      onSuccess();
     } catch (error) {
       console.error("Failed to save task:", error);
     } finally {
-      onClose(); // Close the modal regardless of success or failure
+      onClose();
     }
   };
 
@@ -62,9 +53,14 @@ const TaskModal: React.FC<TaskModalProps> = ({
     >
   ) => {
     const { id, value } = e.target;
+
+    let newValue: string | Date | null = value;
+
+    if (id === "dueDate") newValue = new Date(value);
+
     setFormData((prevData) => ({
       ...prevData,
-      [id]: value,
+      [id]: newValue,
     }));
   };
 
@@ -92,8 +88,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
             <label htmlFor="description">Description</label>
             <textarea
               id="description"
-              value={formData.description || ""} // Use a default empty string for optional fields
+              value={formData.description}
               onChange={handleChange}
+              required
             />
           </FormField>
           <FormField>
@@ -101,8 +98,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
             <input
               id="dueDate"
               type="date"
-              value={formData.dueDate || ""}
+              value={formatDateForInput(formData.dueDate)}
               onChange={handleChange}
+              required
             />
           </FormField>
           <FormField>
@@ -145,8 +143,7 @@ const ModalContainer = styled.div`
   background: white;
   padding: 24px;
   border-radius: 8px;
-  max-width: 500px;
-  width: 90%;
+  width: 500px;
   position: relative;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
@@ -183,6 +180,7 @@ const FormField = styled.div`
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1rem;
+    resize: vertical;
   }
 `;
 

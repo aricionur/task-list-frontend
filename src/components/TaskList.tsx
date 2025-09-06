@@ -2,7 +2,7 @@ import { useState } from "react";
 import { styled } from "styled-components";
 import { deleteTask } from "../api/tasks";
 import { Status, Task } from "../types/Task";
-import { formatDate } from "../utils/helpers";
+import { formatDateForList } from "../utils/helpers";
 import { BackgroundColorKeys } from "../utils/style";
 import { Button } from "./common/Buttons";
 
@@ -77,7 +77,9 @@ export default function TaskList({ tasks, fetchTasks, onTaskClick }: Props) {
                   {task.status}
                 </Tag>
               </StyledTableCell>
-              <StyledTableCell>{formatDate(task.dueDate)}</StyledTableCell>
+              <StyledTableCell>
+                {formatDateForList(task.dueDate)}
+              </StyledTableCell>
               <StyledTableCell>
                 <Button
                   backgroundColor="var(--color-red-100)"
