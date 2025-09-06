@@ -1,10 +1,10 @@
 import { GlobalStyles } from "./styles/GlobalStyles";
 import styled from "styled-components";
-import TaskForm from "./components/TaskFrom";
 import TaskList from "./components/TaskList";
 import { useEffect, useState } from "react";
 import { getTasks } from "./api/tasks";
 import { Task } from "./types/Task";
+import TaskModal from "./components/TaskModal"; // Your new merged modal component
 
 const AppContainer = styled.div`
   h1 {
@@ -13,9 +13,10 @@ const AppContainer = styled.div`
   }
 `;
 
-// for simplicity, I just selected App as parent component.
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   useEffect(() => {
     fetchTasks();
@@ -26,13 +27,40 @@ function App() {
     setTasks(fetchedTasks);
   };
 
+  const openCreateModal = () => {
+    setSelectedTask(null); // Set selected task to null for "create" mode
+    setIsModalOpen(true);
+  };
+
+  const openUpdateModal = (task: Task) => {
+    setSelectedTask(task); // Set the task for "update" mode
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedTask(null); // Reset the selected task on close
+    fetchTasks(); // Refresh tasks after modal is closed
+  };
+
   return (
     <>
       <GlobalStyles />
       <AppContainer>
         <h1>Task Management</h1>
-        <TaskForm onTaskCreated={fetchTasks} />
-        <TaskList tasks={tasks} fetchTasks={fetchTasks} />
+        <button onClick={openCreateModal}>Create New Task</button>
+        <TaskList
+          tasks={tasks}
+          fetchTasks={fetchTasks}
+          onTaskClick={openUpdateModal}
+        />
+        {/* Render the single TaskModal component */}
+        <TaskModal
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+          task={selectedTask}
+          onSuccess={fetchTasks}
+        />
       </AppContainer>
     </>
   );

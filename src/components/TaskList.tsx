@@ -7,21 +7,22 @@ import { formatDate } from "../utils/helpers";
 interface Props {
   tasks: Task[];
   fetchTasks: () => void;
+  onTaskClick: (task: Task) => void;
 }
 
-export default function TaskList({ tasks, fetchTasks }: Props) {
+export default function TaskList({ tasks, fetchTasks, onTaskClick }: Props) {
   const [sortColumn, setSortColumn] = useState<string | null>(null);
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
-  const handleUpdateStatus = async (id: number, status: Status) => {
-    await updateTask(id, { status });
-    fetchTasks();
-  };
+  // const handleUpdateStatus = async (id: number, status: Status) => {
+  //   await updateTask(id, { status });
+  //   fetchTasks();
+  // };
 
-  const handleDeleteTask = async (id: number) => {
-    await deleteTask(id);
-    fetchTasks();
-  };
+  // const handleDeleteTask = async (id: number) => {
+  //   await deleteTask(id);
+  //   fetchTasks();
+  // };
 
   const handleSort = (column: string) => {
     if (sortColumn === column) {
@@ -69,7 +70,7 @@ export default function TaskList({ tasks, fetchTasks }: Props) {
         </thead>
         <tbody>
           {sortedTasks.map((task) => (
-            <StyledTableRow key={task.id}>
+            <StyledTableRow key={task.id} onClick={() => onTaskClick(task)}>
               <StyledTableCell>{task.title}</StyledTableCell>
               <StyledTableCell>{task.description}</StyledTableCell>
               <StyledTableCell>
@@ -135,13 +136,13 @@ const StyledTableRow = styled.tr`
 const statusColorMap: Record<Status, BackgroundColorKeys> = {
   [Status.Todo]: "#FEEF82",
   [Status.InProgress]: "#7ECBBC",
-  [Status.Done]: "#3A48B2",
+  [Status.Done]: "#4256ec",
 };
 
 const bgHoverColorMap = {
   "#F03112": "#D0290D",
   "#7ECBBC": "#629E92",
-  "#3A48B2": "#1A2684",
+  "#4256ec": "#1A2684",
   "#FEEF82": "#EADF70",
 };
 
