@@ -1,17 +1,13 @@
 import { GlobalStyles } from "./styles/GlobalStyles";
 import styled from "styled-components";
-import TaskList from "./components/TaskList";
 import { useEffect, useState } from "react";
+
+import TaskList from "./components/TaskList";
 import { getTasks } from "./api/tasks";
 import { Task } from "./types/Task";
-import TaskModal from "./components/TaskModal"; // Your new merged modal component
-
-const AppContainer = styled.div`
-  h1 {
-    color: #333;
-    text-align: center;
-  }
-`;
+import TaskModal from "./components/TaskModal";
+import { Button } from "./components/common/Buttons";
+import "./App.css";
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -28,19 +24,19 @@ function App() {
   };
 
   const openCreateModal = () => {
-    setSelectedTask(null); // Set selected task to null for "create" mode
+    setSelectedTask(null);
     setIsModalOpen(true);
   };
 
   const openUpdateModal = (task: Task) => {
-    setSelectedTask(task); // Set the task for "update" mode
+    setSelectedTask(task);
     setIsModalOpen(true);
   };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setSelectedTask(null); // Reset the selected task on close
-    fetchTasks(); // Refresh tasks after modal is closed
+    setSelectedTask(null);
+    fetchTasks();
   };
 
   return (
@@ -48,13 +44,17 @@ function App() {
       <GlobalStyles />
       <AppContainer>
         <h1>Task Management</h1>
-        <button onClick={openCreateModal}>Create New Task</button>
+
+        <Button onClick={openCreateModal} isAnimated>
+          Create New Task
+        </Button>
+
         <TaskList
           tasks={tasks}
           fetchTasks={fetchTasks}
           onTaskClick={openUpdateModal}
         />
-        {/* Render the single TaskModal component */}
+
         <TaskModal
           isOpen={isModalOpen}
           onClose={handleModalClose}
@@ -67,3 +67,10 @@ function App() {
 }
 
 export default App;
+
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+`;

@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { styled } from "styled-components";
-import { deleteTask, updateTask } from "../api/tasks";
+import { deleteTask } from "../api/tasks";
 import { Status, Task } from "../types/Task";
 import { formatDate } from "../utils/helpers";
+import { BackgroundColorKeys } from "../utils/style";
+import { Button } from "./common/Buttons";
 
 interface Props {
   tasks: Task[];
@@ -14,15 +16,10 @@ export default function TaskList({ tasks, fetchTasks, onTaskClick }: Props) {
   const [sortColumn, setSortColumn] = useState<string | null>(null);
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
-  // const handleUpdateStatus = async (id: number, status: Status) => {
-  //   await updateTask(id, { status });
-  //   fetchTasks();
-  // };
-
-  // const handleDeleteTask = async (id: number) => {
-  //   await deleteTask(id);
-  //   fetchTasks();
-  // };
+  const handleDeleteTask = async (id: number) => {
+    await deleteTask(id);
+    fetchTasks();
+  };
 
   const handleSort = (column: string) => {
     if (sortColumn === column) {
@@ -66,6 +63,8 @@ export default function TaskList({ tasks, fetchTasks, onTaskClick }: Props) {
               {sortColumn === "dueDate" &&
                 (sortDirection === "asc" ? "▲" : "▼")}
             </TableHeader>
+
+            <TableHeader>Actions</TableHeader>
           </tr>
         </thead>
         <tbody>
@@ -79,6 +78,17 @@ export default function TaskList({ tasks, fetchTasks, onTaskClick }: Props) {
                 </Tag>
               </StyledTableCell>
               <StyledTableCell>{formatDate(task.dueDate)}</StyledTableCell>
+              <StyledTableCell>
+                <Button
+                  backgroundColor="var(--color-red-100)"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteTask(task.id);
+                  }}
+                >
+                  Delete
+                </Button>
+              </StyledTableCell>
             </StyledTableRow>
           ))}
         </tbody>
@@ -88,12 +98,13 @@ export default function TaskList({ tasks, fetchTasks, onTaskClick }: Props) {
 }
 
 const TaskListContainer = styled.div`
-  padding: 24px;
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledTable = styled.table`
   width: 100%;
-  border-collapse: collapse; /* The key property */
+  border-collapse: collapse;
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -105,25 +116,16 @@ const TableHeader = styled.th`
   background-color: #f2f2f2;
   cursor: pointer;
   user-select: none;
-  border: 2px solid #ddd; /* Add a 2px solid border */
+  border: 2px solid #ddd;
 
   &:hover {
     background-color: #e2e2e2;
   }
 `;
 
-const ActionCell = styled.td`
-  padding: 0.5rem;
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  flex-wrap: wrap;
-  border: 2px solid #ddd; /* Add a 2px solid border */
-`;
-
 const StyledTableCell = styled.td`
   padding: 1rem;
-  border: 2px solid #ddd; /* A new component for standard cells */
+  border: 2px solid #ddd;
 `;
 
 const StyledTableRow = styled.tr`
@@ -134,19 +136,10 @@ const StyledTableRow = styled.tr`
 `;
 
 const statusColorMap: Record<Status, BackgroundColorKeys> = {
-  [Status.Todo]: "#FEEF82",
-  [Status.InProgress]: "#7ECBBC",
-  [Status.Done]: "#4256ec",
+  [Status.Todo]: "var(--color-yellow-100)",
+  [Status.InProgress]: "var(--color-green-100)",
+  [Status.Done]: "var(--color-blue-100)",
 };
-
-const bgHoverColorMap = {
-  "#F03112": "#D0290D",
-  "#7ECBBC": "#629E92",
-  "#4256ec": "#1A2684",
-  "#FEEF82": "#EADF70",
-};
-
-type BackgroundColorKeys = keyof typeof bgHoverColorMap;
 
 interface TagProps {
   backgroundColor: BackgroundColorKeys;
@@ -157,21 +150,4 @@ const Tag = styled.div<TagProps>`
   background-color: ${(props) => props.backgroundColor};
   width: fit-content;
   border-radius: 4px;
-`;
-
-interface ButtonProps {
-  backgroundColor: BackgroundColorKeys;
-}
-// Modified Button styled component
-const Button = styled.button<ButtonProps>`
-  background-color: ${(props) => props.backgroundColor};
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${(props) => bgHoverColorMap[props.backgroundColor]};
-  }
 `;

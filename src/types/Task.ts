@@ -7,8 +7,8 @@ export enum Status {
 export interface Task {
   id: number;
   title: string;
-  description?: string;
-  dueDate?: string;
+  description: string;
+  dueDate: string;
   status: Status;
 }
 

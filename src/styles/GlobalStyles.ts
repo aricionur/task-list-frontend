@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
   body {
@@ -9,9 +9,4 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  #root {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 2rem;
-  }
 `;
