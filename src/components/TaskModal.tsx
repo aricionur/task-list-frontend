@@ -26,10 +26,11 @@ const TaskModal: React.FC<TaskModalProps> = ({
   onSuccess,
   task,
 }) => {
-  const [formData, setFormData] = useState<FormData>(task || defaultNewTask);
+  const [formData, setFormData] = useState<FormData>(defaultNewTask);
 
   useEffect(() => {
-    setFormData(task || defaultNewTask);
+    if (task) setFormData(task);
+    else setFormData(defaultNewTask);
   }, [task]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -43,6 +44,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
     } catch (error) {
       console.error("Failed to save task:", error);
     } finally {
+      setFormData(defaultNewTask);
       onClose();
     }
   };
@@ -159,7 +161,6 @@ const CloseButton = styled.button`
   color: #333;
 `;
 
-// Styled components for the form itself, taken from your TaskForm
 const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
