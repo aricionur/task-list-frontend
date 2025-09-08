@@ -83,7 +83,7 @@ export default function TaskList({ tasks, fetchTasks, onTaskClick }: Props) {
               <StyledTableCell>
                 <Button
                   backgroundColor="var(--color-red-100)"
-                  onClick={(e) => {
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
                     handleDeleteTask(task.id);
                   }}
@@ -147,7 +147,9 @@ interface TagProps {
   backgroundColor: BackgroundColorKeys;
 }
 
-const Tag = styled.div<TagProps>`
+const Tag = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "backgroundColor",
+})<TagProps>`
   padding: 10px;
   background-color: ${(props) => props.backgroundColor};
   width: fit-content;

@@ -18,7 +18,10 @@ interface ButtonProps {
   isAnimated?: boolean;
 }
 
-export const Button = styled.button<ButtonProps>`
+export const Button = styled.button.withConfig({
+  shouldForwardProp: (prop) =>
+    prop !== "backgroundColor" && prop !== "isAnimated",
+})<ButtonProps>`
   width: fit-content;
   background-color: ${(props) => props.backgroundColor};
   color: white;
