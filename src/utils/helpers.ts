@@ -1,4 +1,4 @@
-export const formatDateForList = (date?: Date) => {
+export const formatDateForList = (date?: Date | null) => {
   return (
     date &&
     new Date(date).toLocaleDateString("en-US", {
@@ -9,7 +9,7 @@ export const formatDateForList = (date?: Date) => {
   );
 };
 
-export const formatDateForInput = (date?: Date): string => {
+export const formatDateForInput = (date?: Date | null): string => {
   if (!date || isNaN(date.getTime())) {
     return "";
   }
