@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, FC, FormEvent, ChangeEvent } from "react";
 import styled from "styled-components";
 import { createTask, updateTask } from "../api/tasks";
 import { Task, CreateTask, Status } from "../types/Task";
@@ -18,7 +18,7 @@ const defaultNewTask: CreateTask = {
   status: Status.Todo,
 };
 
-const TaskModal: React.FC<TaskModalProps> = ({
+const TaskModal: FC<TaskModalProps> = ({
   isOpen,
   onClose,
   onSuccess,
@@ -31,7 +31,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
     else setFormData(defaultNewTask);
   }, [task]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     try {
@@ -48,9 +48,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
   };
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
 
@@ -70,7 +68,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
 
   return (
     <ModalBackdrop onClick={onClose}>
-      <ModalContainer onClick={(e) => e.stopPropagation()}>
+      <ModalContainer
+        onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
+      >
         <CloseButton onClick={onClose}>&times;</CloseButton>
         <FormContainer onSubmit={handleSubmit}>
           <h2>{task ? "Update Task" : "Create New Task"}</h2>
