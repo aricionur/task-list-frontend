@@ -27,7 +27,7 @@ const parseDates = (data: any): any => {
   return data;
 };
 
-export const addResponseInterceptors = (apiClient: AxiosInstance) => {
+const addResponseInterceptors = (apiClient: AxiosInstance) => {
   apiClient.interceptors.response.use(
     (response) => {
       parseDates(response.data);
@@ -37,4 +37,8 @@ export const addResponseInterceptors = (apiClient: AxiosInstance) => {
       return Promise.reject(error);
     }
   );
+};
+
+export const addAxiosInterceptors = (apiClient: AxiosInstance) => {
+  addResponseInterceptors(apiClient);
 };

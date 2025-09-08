@@ -7,11 +7,11 @@ export enum Status {
 export interface Task {
   id: number;
   title: string;
-  description: string;
-  dueDate: Date;
   status: Status;
+  description?: string;
+  dueDate?: Date;
 }
 
 export type CreateTask = Omit<Task, "id">;
 
-export type UpdateTask = Partial<CreateTask>;
+export type UpdateTask = Partial<Task>;

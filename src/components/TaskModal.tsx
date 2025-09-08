@@ -15,8 +15,6 @@ interface TaskModalProps {
 
 const defaultNewTask: CreateTask = {
   title: "",
-  description: "",
-  dueDate: new Date(),
   status: Status.Todo,
 };
 
@@ -92,7 +90,6 @@ const TaskModal: React.FC<TaskModalProps> = ({
               id="description"
               value={formData.description}
               onChange={handleChange}
-              required
             />
           </FormField>
           <FormField>
@@ -102,7 +99,6 @@ const TaskModal: React.FC<TaskModalProps> = ({
               type="date"
               value={formatDateForInput(formData.dueDate)}
               onChange={handleChange}
-              required
             />
           </FormField>
           <FormField>
