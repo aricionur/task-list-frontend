@@ -55,6 +55,14 @@ yarn preview
 
 The application will be available at `http://localhost:4173`.
 
+### Test project
+
+To test the project, run:
+
+```sh
+yarn test
+```
+
 ---
 
 ## 🐳 Docker
