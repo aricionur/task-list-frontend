@@ -45,6 +45,16 @@ yarn build
 
 The build files will be generated in the `dist/` directory.
 
+### Preview the Production Build
+
+To serve the production build locally and test it, run:
+
+```sh
+yarn preview
+```
+
+The application will be available at `http://localhost:4173`.
+
 ---
 
 ## 🐳 Docker
