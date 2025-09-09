@@ -63,6 +63,9 @@ To test the project, run:
 yarn test
 ```
 
+All unit, integration and smoke test will be performed.
+In memory db is created on the fly, no need to have running database while testing.
+
 ---
 
 ## 🐳 Docker
