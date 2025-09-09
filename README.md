@@ -1,9 +1,3 @@
-Based on the format you provided, here's a revised `README.md` for your project. This version uses the same structure, headings, and code block styles as your example to maintain consistency.
-
----
-
-# React + TypeScript + Vite
-
 This project is a simple task list application built with **React** and **TypeScript** using **Vite** as the build tool. It provides a minimal setup for modern frontend development with a focus on a component-based architecture and a clean user interface.
 
 ## 🛠️ Technologies Used
