@@ -1,69 +1,92 @@
+Based on the format you provided, here's a revised `README.md` for your project. This version uses the same structure, headings, and code block styles as your example to maintain consistency.
+
+---
+
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a simple task list application built with **React** and **TypeScript** using **Vite** as the build tool. It provides a minimal setup for modern frontend development with a focus on a component-based architecture and a clean user interface.
 
-Currently, two official plugins are available:
+## 🛠️ Technologies Used
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Frontend**: React
+- **Styling**: Styled-Components
+- **Package Manager**: Yarn
+- **Bundler**: Vite
+- **Testing**: Jest, React Testing Library, Cypress
 
-## Expanding the ESLint configuration
+## 📦 Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+To run this project, ensure you have the following installed:
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- [Node.js](https://nodejs.org/) (version 20 or higher)
+- [Yarn](https://yarnpkg.com/)
+- [Docker](https://www.docker.com/)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Local Development
+
+1.  **Clone the repository:**
+    ```sh
+    git clone https://github.com/your-username/task-list-frontend.git
+    cd task-list-frontend
+    ```
+2.  **Install dependencies:**
+    ```sh
+    yarn install
+    ```
+3.  **Run the development server:**
+    ```sh
+    yarn dev
+    ```
+    The application will be available at `http://localhost:5173`.
+
+### Build for Production
+
+To create a production-optimized build, run:
+
+```sh
+yarn build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The build files will be generated in the `dist/` directory.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🐳 Docker
+
+This project can be run in a Docker container, providing a consistent and isolated environment.
+
+### Dockerfile
+
+The included `Dockerfile` uses a multi-stage build. The first stage uses a Node.js image to install dependencies and run the production build. The second stage uses a lightweight Nginx image and only copies the final, static build files, resulting in a minimal and production-ready image.
+
+### How to Run with Docker
+
+1.  **Build the Docker Image**
+
+    Navigate to the project root and build the image.
+
+    ```sh
+    docker build -t task-list-frontend .
+    ```
+
+2.  **Run the Docker Container**
+
+    Map a port on your local machine (e.g., 8080) to the container's port 80.
+
+    ```sh
+    docker run -p 8080:80 task-list-frontend
+    ```
+
+    The application will be available in your web browser at `http://localhost:8080`.
+
+---
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+
+[Specify your project's license here, e.g., MIT, Apache, etc.]
